@@ -42,8 +42,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return
+      Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -71,11 +71,10 @@ class _MainPageState extends State<MainPage> {
           },
           currentIndex: _selectedPageIndex,
           showUnselectedLabels: true,
-          selectedLabelStyle: GoogleFonts.manrope(color: Color(0xFFDF4058),fontWeight: FontWeight.bold,fontSize:10),
-          unselectedLabelStyle: GoogleFonts.manrope(color: Color(0xFF717171),fontWeight: FontWeight.bold,fontSize:10),
+          selectedLabelStyle: GoogleFonts.nunito(color: Color(0xFFDF4058),fontWeight: FontWeight.bold,fontSize:10),
+          unselectedLabelStyle: GoogleFonts.nunito(color: Color(0xFF717171),fontWeight: FontWeight.w400,fontSize:10),
         ),
         body: _pages[_selectedPageIndex],
-      ),
     );
   }
 }
