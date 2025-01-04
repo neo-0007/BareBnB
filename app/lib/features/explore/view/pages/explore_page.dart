@@ -1,4 +1,6 @@
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
+import 'package:app/features/explore/view/widgets/location_card.dart';
+import 'package:app/features/explore/view/widgets/map_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -84,11 +86,186 @@ class _ExplorePageState extends State<ExplorePage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(child: Text('Tab 1 Content')),
-          Center(child: Text('Tab 2 Content')),
-          Center(child: Text('Tab 3 Content')),
-          Center(child: Text('Tab 4 Content')),
-          Center(child: Text('Tab 5 Content')),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: false,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: true,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: MapButton(onMapTap: (){}),
+              )
+            ],
+          ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: false,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: true,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: MapButton(onMapTap: (){}),
+              )
+            ],
+          ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: false,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: true,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: MapButton(onMapTap: (){}),
+              )
+            ],
+          ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: false,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: true,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: MapButton(onMapTap: (){}),
+              )
+            ],
+          ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: false,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8),
+                    LocationCard(
+                        imageUrl:
+                            'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg',
+                        hostType: 'SuperHost',
+                        isFavorite: true,
+                        onFavTap: () {},
+                        price: 1000,
+                        locationName: 'Mandrem, India',
+                        dates: '30Jan - 10Feb ',
+                        rating: 4.8)
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                child: MapButton(onMapTap: (){}),
+              )
+            ],
+          ),
         ],
       ),
     );
