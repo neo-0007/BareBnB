@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.fromLTRB(15,15,15,15),
                     child: Text(
                       'Where to?',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                         fontSize: 22
@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           hintText: 'Search for a location',
-                          hintStyle: GoogleFonts.nunito(
+                          hintStyle: GoogleFonts.roboto(
                             color: Colors.grey,
                             fontSize: 15
                           ),
@@ -105,7 +105,100 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-          )
+          ),
+          SizedBox(height: 20),
+          // "When" Box
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Container(
+              height: 50, // Reduced height
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.withAlpha(50), width: 0.5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withAlpha(50),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                    'When',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(83, 0, 0, 0),
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    'Add dates',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(170, 0, 0, 0),
+                      fontSize: 15,
+                    ),
+                  ),
+                  ]
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+
+          // "Who" Box
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Container(
+              height: 50, // Reduced height
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.withAlpha(50), width: 0.5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withAlpha(50),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                    'Who',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(83, 0, 0, 0),
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    'Add guests',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(170, 0, 0, 0),
+                      fontSize: 15,
+                    ),
+                  ),
+                  ]
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
