@@ -39,26 +39,26 @@ class _ExplorePageState extends State<ExplorePage>
       isFavorite: false,
     ),
     Location(
-      name: 'Mandrem, India',
+      name: 'Male, Maldives',
       imageUrls: [
-        'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg'
+        'https://a0.muscache.com/im/pictures/miso/Hosting-1122281947082475682/original/bf221223-a9f2-4d21-836c-e56c6ff3b70a.jpeg'
       ],
-      rating: 4.9,
+      rating: 5.0,
       hostType: 'SuperHost',
       dates: 'Jan 5 - Feb 10',
-      price: 1000,
+      price: 170000,
       isFavorite: false,
     ),
     Location(
-      name: 'Mandrem, India',
+      name: 'Himachal, India',
       imageUrls: [
-        'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg'
+        'https://a0.muscache.com/im/pictures/miso/Hosting-869412107957653896/original/855fd4f6-0fd7-4f19-9f14-5ec43de40f91.jpeg'
       ],
-      rating: 4.9,
+      rating: 4.6,
       hostType: 'SuperHost',
       dates: 'Jan 5 - Feb 10',
-      price: 1000,
-      isFavorite: false,
+      price: 24000,
+      isFavorite: true,
     ),
   ];
 

@@ -126,7 +126,7 @@ class LocationCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                '\$$price',
+                '₹$price',
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.bold,
                 ),

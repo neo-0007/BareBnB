@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     const ProfilePage(),
   ];
 
-  int _selectedPageIndex = 4;
+  int _selectedPageIndex = 0;
 
   Widget _buildIcon(String assetPath, int index) {
   return 
