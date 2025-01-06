@@ -1,3 +1,4 @@
+import 'package:app/features/profile/views/widgets/profile_tiles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,7 +22,8 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/icons/avatar-dummy.png'),
+                    backgroundImage:
+                        AssetImage('assets/icons/avatar-dummy.png'),
                   ),
                   SizedBox(
                     width: 20,
@@ -31,10 +33,11 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Text(
                         'John Doe',
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Text('Show Profile', style: TextStyle(color: Colors.grey)),
+                      Text('Show Profile',
+                          style: TextStyle(color: Colors.grey)),
                     ],
                   ),
                   Expanded(
@@ -68,60 +71,29 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              InkWell(
+              ProfileTiles(
+                  text: 'Personal Information',
+                  icon: Icons.person,
+                  onTap: () {}),
+              ProfileTiles(
+                icon: Icons.lock,
+                text: 'Privacy',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text('Personal Information'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
               ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.credit_card,
+                text: 'Payments',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.lock),
-                  title: Text('Privacy'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
               ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.notifications,
+                text: 'Notifications',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.credit_card),
-                  title: Text('Payments'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
               ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.translate,
+                text: 'Translation',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.notifications),
-                  title: Text('Notifications'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
-              ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
-                onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.translate),
-                  title: Text('Translation'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
-              ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
               ),
               SizedBox(
                 height: 20,
@@ -136,27 +108,15 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.add_home_sharp,
+                text: 'List your space',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.add_home_sharp),
-                  title: Text('List your space'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
               ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.home_max_outlined,
+                text: 'Host an Experience',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.home_max_outlined),
-                  title: Text('Host an Experience'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
-              ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
               ),
               SizedBox(
                 height: 20,
@@ -171,17 +131,11 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.card_giftcard,
+                text: 'Gift Cards',
+                subtext: 'Send or redeem gift cards',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.card_giftcard),
-                  title: Text('Gift Cards'),
-                  subtitle: Text('Send or redeem gift cards'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
-              ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
               ),
               SizedBox(
                 height: 20,
@@ -196,27 +150,15 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.privacy_tip,
+                text: 'Privacy Policy',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.privacy_tip),
-                  title: Text('Privacy Policy'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
               ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
-              ),
-              InkWell(
+              ProfileTiles(
+                icon: Icons.article,
+                text: 'Terms of Service',
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(Icons.article),
-                  title: Text('Terms of Service'),
-                  trailing: Icon(Icons.navigate_next_sharp),
-                ),
-              ),
-              Divider(
-                color: const Color.fromARGB(62, 158, 158, 158),
               ),
               SizedBox(
                 height: 20,
