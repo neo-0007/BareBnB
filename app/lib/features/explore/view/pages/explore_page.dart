@@ -1,4 +1,5 @@
 import 'package:app/features/explore/models/location.dart';
+import 'package:app/features/explore/view/pages/search_page.dart';
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
 import 'package:app/features/explore/view/widgets/location_card.dart';
 import 'package:app/features/explore/view/widgets/map_button.dart';
@@ -84,6 +85,8 @@ class _ExplorePageState extends State<ExplorePage>
         title: ExploreSearchbar(
           onTap: () {
             print('Searchbar tapped');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SearchPage()));
           },
         ),
         backgroundColor: Colors.white,
