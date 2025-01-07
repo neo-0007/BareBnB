@@ -23,6 +23,24 @@ class AuthService {
     }
   }
 
+  // Sign Up User
+  Future<User?> signUp(String email, String password) async {
+    try {
+      final UserCredential res = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Save refresh token securely
+      await _secureStorage.write(
+        key: 'refresh_token',
+        value:res.user!.refreshToken!,
+      );
+      return res.user;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    }
+  }
+
   // Check if user is signed in
   Future<User?> getCurrentUser() async {
     return _auth.currentUser;
