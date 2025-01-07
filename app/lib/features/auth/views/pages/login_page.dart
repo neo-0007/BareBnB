@@ -1,5 +1,6 @@
 import 'package:app/features/auth/repositories/firebase_auth_repository.dart';
 import 'package:app/features/auth/services/firebase_auth_service.dart';
+import 'package:app/features/auth/views/pages/signup_page.dart';
 import 'package:app/features/auth/views/widgets/auth_button.dart';
 import 'package:app/features/auth/views/widgets/credential_fields.dart';
 import 'package:app/features/auth/views/widgets/social_icon.dart';
@@ -162,12 +163,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 10),
                     Center(
-                      child: Text(
-                        "Signup?",
-                        style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                            decoration: TextDecoration.underline),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+                        },
+                        child: Text(
+                          "Signup?",
+                          style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     )
                   ],

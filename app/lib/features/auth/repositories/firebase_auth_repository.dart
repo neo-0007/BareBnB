@@ -13,4 +13,8 @@ class AuthRepository {
   Future<void> logout() async {
     return await _authService.signOut();
   }
+
+  Future<User?> signup(String email, String password) async {
+    return await _authService.signUp(email, password);
+  }
 }
