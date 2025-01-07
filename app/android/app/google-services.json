@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "379220315367",
+    "project_id": "barebnb-c35a0",
+    "storage_bucket": "barebnb-c35a0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379220315367:android:6d128c695768fa9335a642",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCut88DLlW5sRlPoA8gQuqdjPp0DUPqYtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
