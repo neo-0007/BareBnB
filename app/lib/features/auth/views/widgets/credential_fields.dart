@@ -28,7 +28,7 @@ class CredentialFields extends StatelessWidget {
                   child: TextField(
                     controller: phoneController,
                     decoration: InputDecoration(
-                      hintText: "Phone number",
+                      hintText: "Email",
                       hintStyle: const TextStyle(
                         fontSize: 18,
                         color: Colors.black45,
