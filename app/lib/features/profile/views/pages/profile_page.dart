@@ -1,9 +1,34 @@
+import 'package:app/features/auth/repositories/firebase_auth_repository.dart';
+import 'package:app/features/auth/services/firebase_auth_service.dart';
+import 'package:app/features/auth/views/pages/login_page.dart';
 import 'package:app/features/profile/views/widgets/profile_tiles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  AuthRepository authRepository = AuthRepository(AuthService());
+
+  Future<void> logout() async {
+    await authRepository.logout();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.green,
+        content: Text("Logout Successful"),
+      ),
+    );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +192,9 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      logout();
+                    },
                     child: Text(
                       'Logout',
                       style: TextStyle(

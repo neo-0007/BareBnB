@@ -1,3 +1,6 @@
+import 'package:app/features/auth/repositories/firebase_auth_repository.dart';
+import 'package:app/features/auth/services/firebase_auth_service.dart';
+import 'package:app/features/auth/views/widgets/auth_button.dart';
 import 'package:app/features/auth/views/widgets/credential_fields.dart';
 import 'package:app/features/auth/views/widgets/social_icon.dart';
 import 'package:app/features/main_page.dart';
@@ -12,11 +15,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  late final AuthRepository authRepository;
+
+  @override
+  void initState() {
+    super.initState();
+    authRepository = AuthRepository(AuthService());
+  }
+
+  Future<void> login(String email, String password) async {
+    try {
+      final user = await authRepository.login(email, password);
+      if (user != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text("Login Successful"),
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      }
+    } catch (e) {
+      if(!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -43,70 +82,27 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     // for phone number field,
                     CredentialFields(
-                      phoneController: phoneController,
+                      phoneController: emailController,
                       passwordController: passwordController,
                     ),
                     const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text:
-                            "We'll call or text you to conform your number. Standart message and data rates apply.  ",
-                        style: GoogleFonts.roboto(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Privacy Policy",
-                            style: GoogleFonts.roboto(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     SizedBox(height: size.height * 0.03),
-                    InkWell(
-                      onTap: () {
-                        if(phoneController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-                          if(phoneController.text != "9876543210" || passwordController.text != 
-                          " Test@123") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Invalid credentials"),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                    AuthButton(
+                        onPressed: () {
+                          if (emailController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
+                            login(
+                                emailController.text, passwordController.text);
                           } else {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MainPage(),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Please fill all the fields"),
                               ),
                             );
                           }
-                        }
-                      },
-                      child: Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFDF4058),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.roboto(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                        },
+                        text: 'Login'),
                     SizedBox(height: size.height * 0.026),
                     Row(
                       children: [
@@ -138,18 +134,18 @@ class _LoginPageState extends State<LoginPage> {
                       name: "Continue with Facebook",
                       color: Colors.blue,
                       iconSize: 30,
-                    ),
-                    InkWell(
                       onTap: () {},
-                      child: SocialIcon(
-                        size: size,
-                        icon: Icons.g_mobiledata,
-                        name: "Continue with Google",
-                        color: Colors.pink,
-                        iconSize: 27,
-                      ),
                     ),
                     SocialIcon(
+                      onTap: () {},
+                      size: size,
+                      icon: Icons.g_mobiledata,
+                      name: "Continue with Google",
+                      color: Colors.pink,
+                      iconSize: 27,
+                    ),
+                    SocialIcon(
+                      onTap: () {},
                       size: size,
                       icon: Icons.apple,
                       name: "Continue with Apple",
@@ -157,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                       iconSize: 30,
                     ),
                     SocialIcon(
+                      onTap: () {},
                       size: size,
                       icon: Icons.email_outlined,
                       name: "Continue with email",
@@ -168,9 +165,9 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Signup?",
                         style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            decoration: TextDecoration.underline),
                       ),
                     )
                   ],
