@@ -1,11 +1,13 @@
-import 'package:app/features/explore/models/location.dart';
+import 'package:app/features/explore/services/explore_service.dart';
 import 'package:app/features/explore/view/pages/search_page.dart';
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
 import 'package:app/features/explore/view/widgets/location_card.dart';
 import 'package:app/features/explore/view/widgets/map_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -26,41 +28,10 @@ class _ExplorePageState extends State<ExplorePage>
     'assets/icons/tnav-ufo.svg',
   ];
 
-  List<Location> locations = [
-    Location(
-      name: 'Mandrem, India',
-      imageUrls: [
-        'https://a0.muscache.com/im/pictures/miso/Hosting-1286208323180296244/original/59132e17-641d-468c-88a6-289952403d08.jpeg'
-      ],
-      rating: 4.9,
-      hostType: 'SuperHost',
-      dates: 'Jan 5 - Feb 10',
-      price: 1000,
-      isFavorite: false,
-    ),
-    Location(
-      name: 'Male, Maldives',
-      imageUrls: [
-        'https://a0.muscache.com/im/pictures/miso/Hosting-1122281947082475682/original/bf221223-a9f2-4d21-836c-e56c6ff3b70a.jpeg'
-      ],
-      rating: 5.0,
-      hostType: 'SuperHost',
-      dates: 'Jan 5 - Feb 10',
-      price: 170000,
-      isFavorite: false,
-    ),
-    Location(
-      name: 'Himachal, India',
-      imageUrls: [
-        'https://a0.muscache.com/im/pictures/miso/Hosting-869412107957653896/original/855fd4f6-0fd7-4f19-9f14-5ec43de40f91.jpeg'
-      ],
-      rating: 4.6,
-      hostType: 'SuperHost',
-      dates: 'Jan 5 - Feb 10',
-      price: 24000,
-      isFavorite: true,
-    ),
-  ];
+  String formattedDate() {
+    final now = DateTime.now();
+    return DateFormat('d MMM').format(now);
+  }
 
   @override
   void initState() {
@@ -127,153 +98,77 @@ class _ExplorePageState extends State<ExplorePage>
       backgroundColor: Colors.white,
       body: TabBarView(
         controller: _tabController,
-        children: [
-          Stack(
+        children: List.generate(
+          5,
+          (index) => Stack(
             alignment: Alignment.center,
             children: [
               Column(
                 children: [
                   SizedBox(height: 10),
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: locations.length,
-                        itemBuilder: (context, index) {
-                          return LocationCard(
-                              imageUrl: locations[index].imageUrls[0],
-                              locationName: locations[index].name,
-                              rating: locations[index].rating,
-                              hostType: locations[index].hostType,
-                              dates: locations[index].dates,
-                              price: locations[index].price,
-                              isFavorite: locations[index].isFavorite,
-                              onFavTap: () {});
-                        }),
-                  )
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: ExploreService().fetchLocations(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                          return Center(child: Text('No locations found'));
+                        }
+
+                        final locations = snapshot.data!.docs;
+                        return ListView.builder(
+                          itemCount: locations.length,
+                          itemBuilder: (context, index) {
+                            final locationData =
+                                locations[index].data() as Map<String, dynamic>;
+                            return LocationCard(
+                              imageUrl: locationData['imageUrls'][0],
+                              locationName: locationData['name'],
+                              rating: locationData['rating'],
+                              hostType: locationData['hostType'],
+                              dates: formattedDate(),
+                              price: locationData['price'],
+                              isFavorite: locationData['isFavorite'],
+                              onFavTap: () async {
+                                final locationData = locations[index].data()
+                                    as Map<String, dynamic>;
+                                final documentId = locations[index].id;
+
+                                bool currentStatus =
+                                    locationData['isFavorite'] ?? false;
+                                bool newStatus = !currentStatus;
+
+                                await ExploreService().updateFavoriteStatus(
+                                    documentId, newStatus);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.green,
+                                    duration: const Duration(seconds: 2),
+                                    content: Text(newStatus
+                                        ? 'Added to favorites'
+                                        : 'Removed from favorites'),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
               Positioned(
                 bottom: 20,
                 child: MapButton(onMapTap: () {}),
-              )
-            ],
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: locations.length,
-                        itemBuilder: (context, index) {
-                          return LocationCard(
-                              imageUrl: locations[index].imageUrls[0],
-                              locationName: locations[index].name,
-                              rating: locations[index].rating,
-                              hostType: locations[index].hostType,
-                              dates: locations[index].dates,
-                              price: locations[index].price,
-                              isFavorite: locations[index].isFavorite,
-                              onFavTap: () {});
-                        }),
-                  )
-                ],
               ),
-              Positioned(
-                bottom: 20,
-                child: MapButton(onMapTap: () {}),
-              )
             ],
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: locations.length,
-                        itemBuilder: (context, index) {
-                          return LocationCard(
-                              imageUrl: locations[index].imageUrls[0],
-                              locationName: locations[index].name,
-                              rating: locations[index].rating,
-                              hostType: locations[index].hostType,
-                              dates: locations[index].dates,
-                              price: locations[index].price,
-                              isFavorite: locations[index].isFavorite,
-                              onFavTap: () {});
-                        }),
-                  )
-                ],
-              ),
-              Positioned(
-                bottom: 20,
-                child: MapButton(onMapTap: () {}),
-              )
-            ],
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: locations.length,
-                        itemBuilder: (context, index) {
-                          return LocationCard(
-                              imageUrl: locations[index].imageUrls[0],
-                              locationName: locations[index].name,
-                              rating: locations[index].rating,
-                              hostType: locations[index].hostType,
-                              dates: locations[index].dates,
-                              price: locations[index].price,
-                              isFavorite: locations[index].isFavorite,
-                              onFavTap: () {});
-                        }),
-                  )
-                ],
-              ),
-              Positioned(
-                bottom: 20,
-                child: MapButton(onMapTap: () {}),
-              )
-            ],
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: locations.length,
-                        itemBuilder: (context, index) {
-                          return LocationCard(
-                              imageUrl: locations[index].imageUrls[0],
-                              locationName: locations[index].name,
-                              rating: locations[index].rating,
-                              hostType: locations[index].hostType,
-                              dates: locations[index].dates,
-                              price: locations[index].price,
-                              isFavorite: locations[index].isFavorite,
-                              onFavTap: () {});
-                        }),
-                  )
-                ],
-              ),
-              Positioned(
-                bottom: 20,
-                child: MapButton(onMapTap: () {}),
-              )
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
