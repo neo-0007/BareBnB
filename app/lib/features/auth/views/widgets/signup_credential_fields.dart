@@ -11,7 +11,7 @@ class SignupCredentialFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 200, // Reduced height
+      height: 185, // Reduced height
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.black45,
@@ -19,7 +19,7 @@ class SignupCredentialFields extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

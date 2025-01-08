@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SocialIcon extends StatelessWidget {
-  const SocialIcon(
-      {super.key,
-      required this.size,
-      required this.icon,
-      required this.name,
-      required this.color,
-      required this.iconSize,
-      required this.onTap,});
+  const SocialIcon({
+    super.key,
+    required this.size,
+    required this.icon,
+    required this.name,
+    required this.color,
+    required this.iconSize,
+    required this.onTap,
+  });
 
   final Size size;
   final IconData icon;
@@ -20,33 +21,38 @@ class SocialIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
         child: Container(
-          width: size.width,
-          padding: const EdgeInsets.symmetric(vertical: 11),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(),
+            border: Border.all(color: Colors.black26),
           ),
           child: Row(
             children: [
-              SizedBox(width: size.width * 0.05),
               Icon(
                 icon,
                 color: color,
                 size: iconSize,
               ),
-              SizedBox(width: size.width * 0.18),
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: iconSize), // Offset for icon width
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
             ],
           ),
         ),

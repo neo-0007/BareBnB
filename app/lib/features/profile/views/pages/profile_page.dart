@@ -24,9 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
         content: Text("Logout Successful"),
       ),
     );
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
     );
   }
 
