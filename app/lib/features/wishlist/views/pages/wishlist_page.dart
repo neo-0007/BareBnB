@@ -1,4 +1,6 @@
+import 'package:app/features/explore/services/explore_service.dart';
 import 'package:app/features/wishlist/views/widgets/wishlist_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,6 +9,8 @@ class WishlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ExploreService exploreService = ExploreService();
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -24,7 +28,7 @@ class WishlistPage extends StatelessWidget {
                   style: GoogleFonts.roboto(
                     fontWeight: FontWeight.normal,
                     decoration: TextDecoration.underline,
-                    fontSize: 18
+                    fontSize: 18,
                   ),
                 ),
               ],
@@ -43,16 +47,47 @@ class WishlistPage extends StatelessWidget {
               height: 20,
             ),
             Expanded(
-              child: GridView.builder(
-                itemCount: 4,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 0,
-                  childAspectRatio: 0.8, // Adjusted to make room for text
-                ),
-                itemBuilder: (context, index) {
-                  return WishlistCard(title:'Item ${index+1}', imageUrl: 'https://a0.muscache.com/im/pictures/miso/Hosting-869412107957653896/original/855fd4f6-0fd7-4f19-9f14-5ec43de40f91.jpeg', onTap: (){});
+              child: StreamBuilder<QuerySnapshot>(
+                stream: exploreService.fetchFavoriteLocations(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error fetching data'),
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text('No favorite items found'),
+                    );
+                  }
+
+                  final favoriteItems = snapshot.data!.docs;
+
+                  return GridView.builder(
+                    itemCount: favoriteItems.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = favoriteItems[index].data() as Map<String, dynamic>;
+                      return WishlistCard(
+                        title: item['name'] ?? 'No Title',
+                        imageUrl: item['imageUrls'][0] ??
+                            'https://via.placeholder.com/150', // Default image
+                        onTap: () {
+                          // Handle card tap
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ),
