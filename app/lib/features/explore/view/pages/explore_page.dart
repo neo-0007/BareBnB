@@ -1,3 +1,4 @@
+import 'package:app/features/explore/repositories/explore_repository.dart';
 import 'package:app/features/explore/services/explore_service.dart';
 import 'package:app/features/explore/view/pages/search_page.dart';
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
@@ -19,6 +20,7 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late ExploreRepository _exploreRepository;
 
   final List<String> navBarImages = [
     'assets/icons/tnav-amazingviews.svg',
@@ -41,6 +43,7 @@ class _ExplorePageState extends State<ExplorePage>
     _tabController.addListener(() {
       setState(() {});
     });
+    _exploreRepository = ExploreRepository(exploreService: ExploreService());
   }
 
   @override
@@ -101,70 +104,77 @@ class _ExplorePageState extends State<ExplorePage>
         children: List.generate(
           5,
           (index) => Stack(
-            alignment: Alignment.center,
+            fit: StackFit.expand,
+            alignment: Alignment
+                .center, // Add this to ensure Stack fills available space
             children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: ExploreService().fetchLocations(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return Center(child: Text('No locations found'));
-                        }
+              StreamBuilder<QuerySnapshot>(
+                stream: _exploreRepository.getAllLocations(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No locations found'));
+                  }
 
-                        final locations = snapshot.data!.docs;
-                        return ListView.builder(
-                          itemCount: locations.length,
-                          itemBuilder: (context, index) {
-                            final locationData =
-                                locations[index].data() as Map<String, dynamic>;
-                            return LocationCard(
-                              imageUrl: locationData['imageUrls'][0],
-                              locationName: locationData['name'],
-                              rating: locationData['rating'],
-                              hostType: locationData['hostType'],
-                              dates: formattedDate(),
-                              price: locationData['price'],
-                              isFavorite: locationData['isFavorite'],
-                              onFavTap: () async {
-                                final locationData = locations[index].data()
-                                    as Map<String, dynamic>;
-                                final documentId = locations[index].id;
-
-                                bool currentStatus =
-                                    locationData['isFavorite'] ?? false;
-                                bool newStatus = !currentStatus;
-
-                                await ExploreService().updateFavoriteStatus(
-                                    documentId, newStatus);
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.green,
-                                    duration: const Duration(seconds: 2),
-                                    content: Text(newStatus
-                                        ? 'Added to favorites'
-                                        : 'Removed from favorites'),
-                                  ),
-                                );
-                              },
+                  final locations = snapshot.data!.docs;
+                  final location1 = locations[0].data() as Map<String, dynamic>;
+                  print(location1);
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: locations.length,
+                    itemBuilder: (context, index) {
+                      final locationData =
+                          locations[index].data() as Map<String, dynamic>;
+                      return LocationCard(
+                        imageUrl: locationData['imageUrls'][0],
+                        locationName: locationData['name'],
+                        rating: locationData['rating'] is String
+                            ? double.tryParse(locationData['rating']) ?? 0.0
+                            : locationData['rating']?.toDouble() ?? 0.0,
+                        hostType: locationData['hostType'],
+                        dates: formattedDate(),
+                        price: locationData['price'],
+                        isFavorite: locationData['isFavorite'],
+                        onFavTap: () async {
+                          final documentId = locations[index].id;
+                          bool currentStatus =
+                              locationData['isFavorite'] ?? false;
+                          bool newStatus = !currentStatus;
+                          await _exploreRepository.updateFavoriteStatus(
+                              documentId, newStatus);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.green,
+                                duration: const Duration(seconds: 2),
+                                content: Text(newStatus
+                                    ? 'Added to favorites'
+                                    : 'Removed from favorites'),
+                              ),
                             );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                          }
+                        },
+                      );
+                    },
+                  );
+                },
               ),
               Positioned(
                 bottom: 20,
-                child: MapButton(onMapTap: () {}),
+                left: 0,
+                right: 0, // Add left/right constraints
+                child: Center(
+                  child: SizedBox(
+                    width: 100,
+                    child: MapButton(
+                      onMapTap: () {},
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
