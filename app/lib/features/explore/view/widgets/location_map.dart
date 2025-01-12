@@ -6,6 +6,7 @@ import 'package:app/features/explore/repositories/path_repository.dart';
 import 'package:app/features/explore/repositories/user_location_repository.dart';
 import 'package:app/features/explore/services/path_finding_service.dart';
 import 'package:app/features/explore/services/user_location_service.dart';
+import 'package:app/features/explore/view/widgets/navigation_option_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -112,7 +113,26 @@ class _LocationInMapState extends State<LocationInMap> {
     ));
   }
 
+  void clearPreviousRoute(MapboxMap mapboxMap) async {
+    try {
+      // Remove the layer if it exists
+      if (await mapboxMap.style.styleLayerExists("route-layer")) {
+        mapboxMap.style.removeStyleLayer("route-layer");
+      }
+
+      // Remove the source if it exists
+      if (await mapboxMap.style.styleSourceExists("route-source")) {
+        mapboxMap.style.removeStyleSource("route-source");
+      }
+
+      print("Previous route cleared.");
+    } catch (e) {
+      print("Error clearing route: $e");
+    }
+  }
+
   void navigationIsOn() async {
+    clearPreviousRoute(mapboxMap!);
     print('Navigation is On');
     await _fetchUserLocation();
     if (userLatitude != null && userLongitude != null) {
@@ -120,6 +140,14 @@ class _LocationInMapState extends State<LocationInMap> {
     }
   }
 
+  void navigateFromTezpur() {
+    clearPreviousRoute(mapboxMap!);
+    setState(() {
+      userLatitude = 26.651218;
+      userLongitude = 92.783813;
+    });
+    _fetchAndDrawRoute();
+  }
 
   @override
   void initState() {
@@ -152,7 +180,41 @@ class _LocationInMapState extends State<LocationInMap> {
                   icon: Icons.navigation_outlined,
                   onPressed: () {
                     print('Navigation button pressed');
-                    navigationIsOn();
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: 400,
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              NavigationOptionButton(
+                                onTap: () {
+                                  navigationIsOn();
+                                  Navigator.pop(context);
+                                },
+                                text: 'FROM YOUR LOCATION',
+                              ),
+                              SizedBox(height: 20),
+                              NavigationOptionButton(
+                                onTap: () {
+                                  navigateFromTezpur();
+                                  Navigator.pop(context);
+                                },
+                                text: 'FROM TEZPUR',
+                              ),
+                              SizedBox(height: 10),
+                              Text('*Note: Navigation from your location may take time or route may not be available due to network issues. Select from tezpur for a quick demo.',style: TextStyle(
+                                color: const Color.fromARGB(148, 0, 0, 0),
+                                fontSize: 10,
+                              ),),
+                            ],
+                          ),
+                        );
+                      },
+                    );
                   },
                 ),
               )
