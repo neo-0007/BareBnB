@@ -20,9 +20,12 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage>
-    with SingleTickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ExploreRepository _exploreRepository;
+
+  @override
+  bool get wantKeepAlive => true;
 
   final List<String> navBarImages = [
     'assets/icons/tnav-amazingviews.svg',
@@ -56,6 +59,7 @@ class _ExplorePageState extends State<ExplorePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: ExploreSearchbar(
