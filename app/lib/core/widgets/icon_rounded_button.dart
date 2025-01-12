@@ -25,9 +25,7 @@ class IconRoundedButton extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onTap: onPressed,
         child: Padding(
           padding: padding,
           child: Icon(

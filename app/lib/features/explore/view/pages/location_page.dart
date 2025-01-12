@@ -1,5 +1,4 @@
-import 'package:app/core/widgets/back_button.dart';
-import 'package:app/features/explore/view/pages/mapbox_map_page.dart';
+import 'package:app/core/widgets/icon_rounded_button.dart';
 import 'package:app/features/explore/view/widgets/location_map.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,8 +59,7 @@ class _LocationPageState extends State<LocationPage> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Expanded(
-                  child: Column(
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -140,11 +138,44 @@ class _LocationPageState extends State<LocationPage> {
                           longitude: 94.1847289,
                         ),
                       ),
+                      SizedBox(height: 10),
+                      Divider(
+                        color: const Color.fromARGB(62, 158, 158, 158),
+                      ),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LocationInMap(
+                                    latitude: 26.651218, longitude: 92.783813,isNavigationPage: true,),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFDF4058),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            'Get Directions',
+                            style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 50),
                     ],
                   ),
                 ),
-              ),
             ],
           ),
         ),
