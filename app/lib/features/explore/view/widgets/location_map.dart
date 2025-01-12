@@ -108,7 +108,7 @@ class _LocationInMapState extends State<LocationInMap> {
       id: "route-layer",
       sourceId: "route-source",
       lineWidth: 5.0,
-      lineColor: 0xFFADD8E6,
+      lineColor: 0xFF333333,
     ));
   }
 

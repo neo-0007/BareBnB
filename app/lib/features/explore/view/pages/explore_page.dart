@@ -1,5 +1,6 @@
 import 'package:app/features/explore/repositories/explore_repository.dart';
 import 'package:app/features/explore/services/explore_service.dart';
+import 'package:app/features/explore/view/pages/location_page.dart';
 import 'package:app/features/explore/view/pages/mapbox_map_page.dart';
 import 'package:app/features/explore/view/pages/search_page.dart';
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
@@ -130,35 +131,54 @@ class _ExplorePageState extends State<ExplorePage>
                     itemBuilder: (context, index) {
                       final locationData =
                           locations[index].data() as Map<String, dynamic>;
-                      return LocationCard(
-                        imageUrl: locationData['imageUrls'][0],
-                        locationName: locationData['name'],
-                        rating: locationData['rating'] is String
-                            ? double.tryParse(locationData['rating']) ?? 0.0
-                            : locationData['rating']?.toDouble() ?? 0.0,
-                        hostType: locationData['hostType'],
-                        dates: formattedDate(),
-                        price: locationData['price'],
-                        isFavorite: locationData['isFavorite'],
-                        onFavTap: () async {
-                          final documentId = locations[index].id;
-                          bool currentStatus =
-                              locationData['isFavorite'] ?? false;
-                          bool newStatus = !currentStatus;
-                          await _exploreRepository.updateFavoriteStatus(
-                              documentId, newStatus);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.green,
-                                duration: const Duration(seconds: 2),
-                                content: Text(newStatus
-                                    ? 'Added to favorites'
-                                    : 'Removed from favorites'),
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LocationPage(
+                                imageUrl: locationData['imageUrls'][0],
+                                name: locationData['name'],
+                                description: locationData['description'],
+                                hostType:locationData['hostType'],
+                                location: locationData['location'],
+                                rating: locationData['rating'] is String
+                                    ? double.tryParse(locationData['rating']) ?? 0.0
+                                    : locationData['rating']?.toDouble() ?? 0.0,
                               ),
-                            );
-                          }
+                            ),
+                          );
                         },
+                        child: LocationCard(
+                          imageUrl: locationData['imageUrls'][0],
+                          locationName: locationData['name'],
+                          rating: locationData['rating'] is String
+                              ? double.tryParse(locationData['rating']) ?? 0.0
+                              : locationData['rating']?.toDouble() ?? 0.0,
+                          hostType: locationData['hostType'],
+                          dates: formattedDate(),
+                          price: locationData['price'],
+                          isFavorite: locationData['isFavorite'],
+                          onFavTap: () async {
+                            final documentId = locations[index].id;
+                            bool currentStatus =
+                                locationData['isFavorite'] ?? false;
+                            bool newStatus = !currentStatus;
+                            await _exploreRepository.updateFavoriteStatus(
+                                documentId, newStatus);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.green,
+                                  duration: const Duration(seconds: 2),
+                                  content: Text(newStatus
+                                      ? 'Added to favorites'
+                                      : 'Removed from favorites'),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   );
