@@ -1,15 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Location {
   final int? id;
   final String name;
+  final String description;
   final List<String> imageUrls;
   final double rating;
   final String hostType;
   final String dates;
+  final GeoPoint location;
   final int price;
   final bool isFavorite;
 
   Location({
     this.id,
+    required this.description,
+    required this.location,
     required this.name,
     required this.imageUrls,
     required this.rating,
@@ -28,7 +34,9 @@ class Location {
       hostType: json['hostType'],
       dates: json['dates'],
       price: json['price'],
-      isFavorite: json['isFavorite'],
+      isFavorite: json['isFavorite'], 
+      description: json['description'],
+      location: json['location'],
     );
   }
 
@@ -41,6 +49,8 @@ class Location {
       'dates': dates,
       'price': price,
       'isFavorite': isFavorite,
+      'description': description,
+      'location': location,
     };
   }
 }
