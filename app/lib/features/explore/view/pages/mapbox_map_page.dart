@@ -1,3 +1,4 @@
+import 'package:app/core/utils/app_permissions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,36 @@ class MapboxMapPage extends StatefulWidget {
 }
 
 class _MapboxMapPageState extends State<MapboxMapPage> {
-  late MapboxMap _controller;
+  MapboxMap? mapboxMap;
+  AppPermissions appPermissions = AppPermissions();
+
+  void _onMapCreated(MapboxMap mapboxMap) {
+    this.mapboxMap = mapboxMap;
+
+    appPermissions.checkLocationPermission().then((isGranted) {
+      if (isGranted) {
+        mapboxMap.location.updateSettings(
+          LocationComponentSettings(
+            enabled: true,
+            showAccuracyRing: true,
+          ),
+        );
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text('Location permission is required to show your location.'),
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +55,11 @@ class _MapboxMapPageState extends State<MapboxMapPage> {
           ),
         ),
       ),
-      onMapCreated: (controller) {
-        _controller = controller;
-        _controller.location.updateSettings(
-          LocationComponentSettings(
-            enabled: true,
-            showAccuracyRing: true,
-          ),
-        );
-      },
+      onMapCreated: _onMapCreated,
       gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-        Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+        Factory<OneSequenceGestureRecognizer>(
+          () => EagerGestureRecognizer(),
+        ),
       },
     );
   }
