@@ -1,5 +1,6 @@
 import 'package:app/core/widgets/back_button.dart';
 import 'package:app/features/explore/view/pages/mapbox_map_page.dart';
+import 'package:app/features/explore/view/widgets/location_map.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -134,7 +135,10 @@ class _LocationPageState extends State<LocationPage> {
                           color: Colors.grey,
                         ),
                         height: 200,
-                        child: MapboxMapPage(),
+                        child: LocationInMap(
+                          latitude: 26.7346827,
+                          longitude: 94.1847289,
+                        ),
                       ),
                       SizedBox(height: 50),
                     ],
