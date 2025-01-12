@@ -1,5 +1,6 @@
 import 'package:app/features/explore/repositories/explore_repository.dart';
 import 'package:app/features/explore/services/explore_service.dart';
+import 'package:app/features/explore/view/pages/mapbox_map_page.dart';
 import 'package:app/features/explore/view/pages/search_page.dart';
 import 'package:app/features/explore/view/widgets/explore_searchbar.dart';
 import 'package:app/features/explore/view/widgets/location_card.dart';
@@ -54,6 +55,8 @@ class _ExplorePageState extends State<ExplorePage>
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
+
     return Scaffold(
       appBar: AppBar(
         title: ExploreSearchbar(
@@ -171,7 +174,38 @@ class _ExplorePageState extends State<ExplorePage>
                   child: SizedBox(
                     width: 100,
                     child: MapButton(
-                      onMapTap: () {},
+                      onMapTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          context: context,
+                          builder: (context) {
+                            return DraggableScrollableSheet(
+                              initialChildSize:
+                                  0.75, // Set the initial height of the modal
+                              minChildSize:
+                                  0.5, // Minimum height the modal can be dragged to
+                              maxChildSize:
+                                  1.0, // Maximum height the modal can expand to
+                              expand: false, // Prevent full-screen expansion
+                              builder: (context, scrollController) {
+                                return GestureDetector(
+                                  onVerticalDragUpdate:
+                                      (_) {}, // Prevent the modal from intercepting gestures
+                                  behavior: HitTestBehavior
+                                      .opaque, // Ensure gestures pass through to the map
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Center(
+                                      child: MapboxMapPage(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
