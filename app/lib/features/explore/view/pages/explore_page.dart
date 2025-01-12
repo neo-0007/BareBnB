@@ -55,8 +55,6 @@ class _ExplorePageState extends State<ExplorePage>
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
-
     return Scaffold(
       appBar: AppBar(
         title: ExploreSearchbar(

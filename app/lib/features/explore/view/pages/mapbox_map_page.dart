@@ -46,6 +46,7 @@ class _MapboxMapPageState extends State<MapboxMapPage> {
   @override
   Widget build(BuildContext context) {
     return MapWidget(
+      styleUri: MapboxStyles.LIGHT,
       cameraOptions: CameraOptions(
         zoom: 10,
         center: Point(
